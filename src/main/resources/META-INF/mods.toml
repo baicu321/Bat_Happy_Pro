@@ -7,9 +7,10 @@ modId="bathappypro"
 
 version="0.1-Forge+1.20.1"
 
-displayName="Bat Happy Pro"
+displayName="BatHappy Pro"
 
 authors="Cu6"
+logoFile = "logo.png"
 
 description='''${mod_description}'''
 [[dependencies.${mod_id}]]
