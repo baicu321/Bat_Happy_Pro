@@ -1,0 +1,5 @@
+
+{
+  "bathappypro.lost_connection": "连接被蝙蝠断开了啦！原因是你安装了：%s。",
+  "bathappypro.timeout": "模组列表同步失败，原因是：连接超时。"
+}

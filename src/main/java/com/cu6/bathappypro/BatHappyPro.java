@@ -1,63 +1,33 @@
 package com.cu6.bathappypro;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
+
+import java.lang.reflect.Modifier;
 
 
 @Mod(BatHappyPro.MOD_ID)
 public class BatHappyPro{
-    public static final String MOD_ID = "bat_happy_pro";
+    public static final String MOD_ID = "bathappypro";
 
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String VERSION = ModList.get().getModFileById(BatHappyPro.MOD_ID).versionString();
+    public static final Gson STD_GSON = new GsonBuilder()
+            .disableHtmlEscaping()
+            .excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT)
+            .create();
 
+    private static final ResourceLocation TIP = new ResourceLocation("bathappypro", "texture/gui/tip.png");
     public BatHappyPro()
     {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        modEventBus.addListener(this::commonSetup);
-
-        MinecraftForge.EVENT_BUS.register(this);
-        modEventBus.addListener(this::addCreative);
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-        LOGGER.info("HELLO FROM COMMON SETUP");
-        LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-    }
-
-
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-    }
-
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
-    }
-
-
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents
-    {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {
-
-        }
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.configSpec);
+        Network.init();
     }
 }
